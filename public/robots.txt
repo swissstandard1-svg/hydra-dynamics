@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hydra-dynamics.example/sitemap.xml

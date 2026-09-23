@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HYDRA Dynamics — Flüssigkeitskühlung für KI-Rechenzentren</title>
+    <meta
+      name="description"
+      content="HYDRA Dynamics kühlt KI-Beschleuniger direkt am Die: Coldplate X1, RackLoop R8 und CDU-500 für 1.500 W pro Chip, Rücklauf bei 68 °C und PUE 1,08. Fiktives Konzept, gebaut als Design- und Coding-Benchmark."
+    />
+    <meta name="theme-color" content="#04070E" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://hydra-dynamics.example/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HYDRA Dynamics" />
+    <meta property="og:title" content="HYDRA Dynamics — Flüssigkeitskühlung für KI-Rechenzentren" />
+    <meta
+      property="og:description"
+      content="Direkt gekühlt am Die: 1.500 W pro Chip, Rücklauf bei 68 °C, PUE 1,08. Die Kühlschicht für die nächste Rechnergeneration."
+    />
+    <meta property="og:url" content="https://hydra-dynamics.example/" />
+    <meta property="og:locale" content="de_DE" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HYDRA Dynamics — Flüssigkeitskühlung für KI-Rechenzentren" />
+    <meta name="twitter:description" content="Direkt gekühlt am Die: 1.500 W pro Chip, Rücklauf bei 68 °C, PUE 1,08." />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "HYDRA Dynamics AG",
+        "url": "https://hydra-dynamics.example/",
+        "description": "Hersteller von Direct-to-Chip-Flüssigkeitskühlung für KI-Rechenzentren. Fiktives Konzept für einen Design- und Coding-Benchmark.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Werftstrasse 14",
+          "postalCode": "8005",
+          "addressLocality": "Zürich",
+          "addressCountry": "CH"
+        },
+        "email": "hello@hydra-dynamics.example",
+        "foundingDate": "2019",
+        "knowsAbout": ["Direct-to-Chip-Kühlung", "Zweiphasen-Kühlung", "Wärmerückgewinnung", "Rechenzentrums-Kühlung"]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Direkt zum Inhalt</a>
+
+    <!-- Ambient-Effekte: rein dekorativ, für Screenreader und Zeigegeräte unsichtbar -->
+    <canvas id="ambient" class="ambient" aria-hidden="true"></canvas>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+
+    <header class="site-header" id="site-header">
+      <div class="shell header__inner">
+        <a class="brand" href="#top" aria-label="HYDRA Dynamics — zum Seitenanfang">
+          <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M16 3c4.6 4.7 7.6 8.6 7.6 12.5a7.6 7.6 0 0 1-15.2 0C8.4 11.6 11.4 7.7 16 3Z" />
+            <path class="brand__wave" d="M10 23.5c1.8-1.4 3.8-2.1 6-2.1s4.2.7 6 2.1" />
+          </svg>
+          <span class="brand__text">HYDRA<em>Dynamics</em></span>
+        </a>
+
+        <nav class="nav" aria-label="Hauptnavigation">
+          <ul class="nav__list">
+            <li><a href="#problem">Ausgangslage</a></li>
+            <li><a href="#prinzip">Prinzip</a></li>
+            <li><a href="#simulator">Simulator</a></li>
+            <li><a href="#produkte">Produkte</a></li>
+            <li><a href="#technik">Technik</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <a class="btn btn--ghost header__cta" href="#kontakt" data-magnet>
+          <span>Machbarkeit prüfen</span>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" /></svg>
+        </a>
+
+        <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-nav">
+          <span class="nav-toggle__bars" aria-hidden="true"><i></i><i></i></span>
+          <span class="sr-only">Menü öffnen</span>
+        </button>
+      </div>
+
+      <div class="mobile-nav" id="mobile-nav" hidden>
+        <ul>
+          <li><a href="#problem">Ausgangslage</a></li>
+          <li><a href="#prinzip">Prinzip</a></li>
+          <li><a href="#simulator">Simulator</a></li>
+          <li><a href="#produkte">Produkte</a></li>
+          <li><a href="#technik">Technik</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#kontakt">Machbarkeit prüfen</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ── HERO ─────────────────────────────────────────────── -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero__aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+
+        <div class="shell hero__inner">
+          <p class="eyebrow" data-reveal="fade">
+            <span class="eyebrow__dot" aria-hidden="true"></span>
+            Direct-to-Chip-Kühlung · Zürich · seit 2019
+          </p>
+
+          <h1 class="hero__title" id="hero-title" data-split="chars">Hitze ist der teuerste Fehler im KI-Rechenzentrum.</h1>
+
+          <p class="hero__lead" data-reveal="up" data-reveal-delay="1">
+            HYDRA Dynamics kühlt Beschleuniger dort, wo die Wärme entsteht: direkt am Die. Wasser statt Luft.
+            <strong>1.500 W pro Chip</strong>, Rücklauf bei 68&nbsp;°C — nutzbar für Fernwärme statt für den Kühlturm.
+          </p>
+
+          <div class="hero__actions" data-reveal="up" data-reveal-delay="2">
+            <a class="btn btn--primary" href="#simulator" data-magnet>
+              <span>Lastfall simulieren</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" /></svg>
+            </a>
+            <a class="btn btn--quiet" href="#prinzip" data-magnet>
+              <span>Prinzip ansehen</span>
+            </a>
+          </div>
+
+          <dl class="hero__stats" data-reveal="up" data-reveal-delay="3">
+            <div class="stat">
+              <dt>Wärmestrom pro Chip</dt>
+              <dd><span data-count-to="1500" data-count-suffix=" W">1.500 W</span></dd>
+            </div>
+            <div class="stat">
+              <dt>Junction bei 12 kW pro Rack</dt>
+              <dd><span data-count-to="45" data-count-suffix=" °C">45 °C</span></dd>
+            </div>
+            <div class="stat">
+              <dt>Power Usage Effectiveness</dt>
+              <dd><span data-count-to="1.08" data-count-decimals="2">1,08</span></dd>
+            </div>
+            <div class="stat">
+              <dt>Rücklauftemperatur</dt>
+              <dd><span data-count-to="68" data-count-suffix=" °C">68 °C</span></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <span class="scroll-hint__line"><i></i></span>
+          <span class="scroll-hint__label">scrollen</span>
+        </div>
+      </section>
+
+      <!-- ── PROBLEM ──────────────────────────────────────────── -->
+      <section class="section section--story" id="problem" aria-labelledby="problem-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">Ausgangslage</p>
+            <h2 class="section__title" id="problem-title" data-split="words">
+              Luft kühlt nicht mehr, was Silizium liefert.
+            </h2>
+            <p class="section__lead" data-reveal="up" data-reveal-delay="1">
+              Moderne KI-Racks liegen bei 30 bis 100 kW. Luft schafft etwa ein Viertel davon, danach steigen
+              Lüfterleistung und Lärm überproportional — und Betreiber drosseln genau die Beschleuniger, für die sie
+              bezahlt haben.
+            </p>
+          </div>
+
+          <div class="story-grid">
+            <article class="card card--story" data-reveal="up" data-tilt>
+              <h3>Die Wand bei 25 kW pro Rack</h3>
+              <p>
+                Darüber kostet jedes zusätzliche Kilowatt überproportional viel Luftleistung: grössere Lamellen, mehr
+                Lüfterdrehzahl, mehr Filterwechsel. Der Grenznutzen kippt, lange bevor das Silizium ans Limit kommt.
+              </p>
+              <ul class="checklist">
+                <li>Lüfterleistung steigt von 8 % auf 22 % der IT-Last</li>
+                <li>Zulufttemperatur als unsichtbarer Taktgeber</li>
+                <li>Drosselung über 80 °C Junction als Standardreaktion</li>
+              </ul>
+            </article>
+
+            <article class="card card--story card--accent" data-reveal="up" data-reveal-delay="1" data-tilt>
+              <h3>Was wir dagegen setzen</h3>
+              <p>
+                Eine Kaltplatte mit 0,018 K/W Wärmewiderstand sitzt direkt auf dem Die. Der Transportweg für Wärme
+                schrumpft von Zentimetern Luft auf Millimeter Metall — und die Abwärme wird bei 68 °C zurückgegeben,
+                nicht bei 28 °C verpufft.
+              </p>
+              <ul class="checklist">
+                <li>Wärmewiderstand 0,018 K/W pro Chip</li>
+                <li>Rücklauf 68 °C, direkt fernwärmetauglich</li>
+                <li>Geschlossener Kreis: nichts verdunstet</li>
+              </ul>
+            </article>
+
+            <div class="thermal" data-reveal="zoom" data-reveal-delay="1">
+              <svg class="thermal__svg" viewBox="0 0 320 320" role="img" aria-labelledby="thermal-title thermal-desc">
+                <title id="thermal-title">Temperaturverteilung: Luftkühlung gegen Direct-to-Chip</title>
+                <desc id="thermal-desc">
+                  Links ein Luftkühler mit heisser Zone im Zentrum, rechts eine Kaltplatte mit gleichmässig kühlem
+                  Feld.
+                </desc>
+                <defs>
+                  <radialGradient id="hot" cx="50%" cy="50%" r="50%">
+                    <stop offset="0" stop-color="#FF7A45" />
+                    <stop offset="0.55" stop-color="#B45309" stop-opacity="0.65" />
+                    <stop offset="1" stop-color="#04070E" stop-opacity="0" />
+                  </radialGradient>
+                  <radialGradient id="cool" cx="50%" cy="50%" r="60%">
+                    <stop offset="0" stop-color="#67E8F9" />
+                    <stop offset="0.6" stop-color="#22D3EE" stop-opacity="0.5" />
+                    <stop offset="1" stop-color="#04070E" stop-opacity="0" />
+                  </radialGradient>
+                  <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#22D3EE" stop-opacity="0.28" />
+                    <stop offset="1" stop-color="#5EEAD4" stop-opacity="0.06" />
+                  </linearGradient>
+                </defs>
+
+                <g class="thermal__side">
+                  <circle cx="80" cy="150" r="70" fill="url(#hot)" class="thermal__glow" aria-hidden="true" />
+                  <rect x="34" y="86" width="92" height="128" rx="12" aria-hidden="true" />
+                  <path class="thermal__flow" d="M20 100v112M52 100v112M84 100v112M116 100v112" />
+                  <text x="80" y="264">Luftkanal</text>
+                  <text class="thermal__value thermal__value--hot" x="80" y="292">94 °C</text>
+                </g>
+
+                <g class="thermal__side">
+                  <circle cx="240" cy="150" r="74" fill="url(#cool)" class="thermal__glow" aria-hidden="true" />
+                  <rect x="194" y="86" width="92" height="128" rx="12" aria-hidden="true" />
+                  <path class="thermal__flow thermal__flow--cool" d="M206 108h68M206 140h68M206 172h68M206 204h68" />
+                  <text x="240" y="264">Kaltplatte</text>
+                  <text class="thermal__value" x="240" y="292">45 °C</text>
+                </g>
+
+                <path class="thermal__plate-bar" d="M132 150h56" fill="url(#plate)" aria-hidden="true" />
+                <text class="thermal__axis" x="160" y="36">Δ 49 K</text>
+              </svg>
+              <p class="thermal__caption">
+                Modellhafte Verteilung bei 375 W pro Chip. Die linke Seite drosselt, die rechte liefert weiter — der
+                Simulator rechnet beide Werte nach.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PRINZIP ──────────────────────────────────────────── -->
+      <section class="section section--principle" id="prinzip" aria-labelledby="prinzip-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">Prinzip</p>
+            <h2 class="section__title" id="prinzip-title" data-split="words">Vier Schritte, ein geschlossener Kreis.</h2>
+            <p class="section__lead" data-reveal="up" data-reveal-delay="1">
+              Wasser nimmt pro Volumen rund 3.500-mal mehr Wärme auf als Luft. Wir nutzen das auf dem kürzesten Weg:
+              Kaltplatte, Rackverteiler, Wärmetauscher, Rückkühler — und zurück.
+            </p>
+          </div>
+
+          <ol class="loop" data-loop>
+            <li class="loop__step" data-reveal="up">
+              <span class="loop__index">01</span>
+              <h3>Kaltplatte</h3>
+              <p>Mikrokanäle über dem Die ziehen die Wärme mit 0,018 K/W ab — deutlich vor der Drosselgrenze.</p>
+            </li>
+            <li class="loop__step" data-reveal="up" data-reveal-delay="1">
+              <span class="loop__index">02</span>
+              <h3>RackLoop</h3>
+              <p>Acht geregelte Zweige versorgen ebenso viele Sockets und stellen den Volumenstrom pro Zweig ein.</p>
+            </li>
+            <li class="loop__step" data-reveal="up" data-reveal-delay="2">
+              <span class="loop__index">03</span>
+              <h3>CDU</h3>
+              <p>Die Kühlverteilung trennt Primär- und Sekundärkreis und hebt den Rücklauf auf 68 °C.</p>
+            </li>
+            <li class="loop__step" data-reveal="up" data-reveal-delay="3">
+              <span class="loop__index">04</span>
+              <h3>Wärme abgeben</h3>
+              <p>Fernwärme, Trockenkühler oder Prozesswärme: Die Abwärme wird genutzt, nicht weggelüftet.</p>
+            </li>
+          </ol>
+
+          <div class="loop__track" aria-hidden="true">
+            <span class="loop__pulse"></span>
+          </div>
+
+          <div class="compare" data-reveal="up">
+            <table>
+              <caption class="sr-only">Kennzahlen im Vergleich: Luftkühlung gegen HYDRA Direct-to-Chip</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Kennzahl</th>
+                  <th scope="col">Luftkühlung</th>
+                  <th scope="col">HYDRA D2C</th>
+                  <th scope="col">Delta</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Rackdichte</th>
+                  <td>bis 25 kW</td>
+                  <td>bis 100 kW</td>
+                  <td class="is-win">4×</td>
+                </tr>
+                <tr>
+                  <th scope="row">Lüfteranteil an der IT-Last</th>
+                  <td>18 %</td>
+                  <td>2 %</td>
+                  <td class="is-win">−89 %</td>
+                </tr>
+                <tr>
+                  <th scope="row">Rücklauftemperatur</th>
+                  <td>28 °C</td>
+                  <td>68 °C</td>
+                  <td class="is-win">+40 K</td>
+                </tr>
+                <tr>
+                  <th scope="row">Junction bei 375 W pro Chip</th>
+                  <td>94 °C</td>
+                  <td>45 °C</td>
+                  <td class="is-win">−49 K</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SIMULATOR ────────────────────────────────────────── -->
+      <section class="section section--simulator" id="simulator" aria-labelledby="simulator-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">Interaktiv</p>
+            <h2 class="section__title" id="simulator-title" data-split="words">Dein Lastfall, in Echtzeit gerechnet.</h2>
+            <p class="section__lead" data-reveal="up" data-reveal-delay="1">
+              Drei Regler, vier Grössen: Der Rechner löst die Energiebilanz eines Racks nach — mit
+              Wasserwärmekapazität, Dichtetabelle, Pumpenkennlinie und dem Wärmewiderstand der Kaltplatte.
+            </p>
+          </div>
+
+          <div class="sim" data-sim data-reveal="up">
+            <form class="sim__controls" aria-describedby="sim-note">
+              <div class="field">
+                <label for="sim-load">
+                  Rechenleistung pro Rack
+                  <output id="sim-load-out" for="sim-load">12 kW</output>
+                </label>
+                <input id="sim-load" name="load" type="range" min="4" max="40" step="1" value="12" />
+                <p class="field__hint">Ein Rack mit 8 Sockets und je vier Dies: 32 Chips.</p>
+              </div>
+
+              <div class="field">
+                <label for="sim-inlet">
+                  Vorlauftemperatur
+                  <output id="sim-inlet-out" for="sim-inlet">38 °C</output>
+                </label>
+                <input id="sim-inlet" name="inlet" type="range" min="18" max="50" step="1" value="38" />
+                <p class="field__hint">Höherer Vorlauf spannt den Rücklauf für Fernwärme weiter auf.</p>
+              </div>
+
+              <div class="field">
+                <label for="sim-quality">
+                  Wärmewiderstand je Chip
+                  <output id="sim-quality-out" for="sim-quality">0,018 K/W</output>
+                </label>
+                <input id="sim-quality" name="quality" type="range" min="12" max="34" step="1" value="18" />
+                <p class="field__hint">Kleinere Werte bedeuten eine bessere Kaltplatte.</p>
+              </div>
+
+              <p class="sim__note" id="sim-note">
+                Modellrechnung: c<sub>p</sub> ≈ 4,19 kJ/(kg·K), 30 K Spreizung, Dichtetabelle für Wasser, quadratische
+                Pumpenkennlinie und 78 % Pumpenwirkungsgrad. Kein Ersatz für eine Auslegung.
+              </p>
+            </form>
+
+            <div class="sim__output" aria-live="polite">
+              <div class="sim__flows" aria-hidden="true">
+                <span class="sim__flow sim__flow--supply"></span>
+                <span class="sim__flow sim__flow--return"></span>
+              </div>
+
+              <dl class="sim__grid">
+                <div class="sim__metric">
+                  <dt>Volumenstrom</dt>
+                  <dd><span data-sim-out="flow">0,3</span> <small>m³/h</small></dd>
+                  <div class="sim__bar" aria-hidden="true"><i data-sim-bar="flow"></i></div>
+                </div>
+                <div class="sim__metric">
+                  <dt>Pumpenleistung</dt>
+                  <dd><span data-sim-out="pump">0,0</span> <small>kW</small></dd>
+                  <div class="sim__bar" aria-hidden="true"><i data-sim-bar="pump"></i></div>
+                </div>
+                <div class="sim__metric">
+                  <dt>Junction-Temperatur</dt>
+                  <dd><span data-sim-out="junction">45</span> <small>°C</small></dd>
+                  <div class="sim__bar" aria-hidden="true"><i data-sim-bar="junction"></i></div>
+                </div>
+                <div class="sim__metric">
+                  <dt>Nutzbare Abwärme</dt>
+                  <dd><span data-sim-out="recover">100</span> <small>%</small></dd>
+                  <div class="sim__bar" aria-hidden="true"><i data-sim-bar="recover"></i></div>
+                </div>
+              </dl>
+
+              <p class="sim__verdict" data-sim-verdict data-state="ok">
+                <span class="sim__verdict-dot" aria-hidden="true"></span>
+                <span data-sim-verdict-text>Tragfähig — Junction 45 °C, Rücklauf 68 °C, die Abwärme ist auf Netzniveau nutzbar.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PRODUKTE ─────────────────────────────────────────── -->
+      <section class="section" id="produkte" aria-labelledby="produkte-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">System</p>
+            <h2 class="section__title" id="produkte-title" data-split="words">Drei Bausteine, ein Kreis.</h2>
+          </div>
+
+          <ul class="gallery" data-gallery tabindex="0" aria-label="Produktkarten, horizontal scrollbar">
+            <li class="product" data-tilt data-reveal="up">
+              <span class="product__tag">Coldplate X1</span>
+              <h3>Die Kaltplatte</h3>
+              <p>
+                Kupfer-Mikrokanäle mit 0,4 mm Steg, Dichtung aus EPDM, geprüft auf 100.000 Zyklen. Sitzt direkt auf
+                dem Die.
+              </p>
+              <dl class="product__specs">
+                <div><dt>Wärmewiderstand</dt><dd>0,018 K/W</dd></div>
+                <div><dt>Dauerlast</dt><dd>1.500 W</dd></div>
+                <div><dt>Druckverlust</dt><dd>0,35 kPa</dd></div>
+              </dl>
+            </li>
+
+            <li class="product" data-tilt data-reveal="up" data-reveal-delay="1">
+              <span class="product__tag">RackLoop R8</span>
+              <h3>Der Verteiler</h3>
+              <p>
+                Blindleitfähigkeitsüberwachung, acht geregelte Zweige, Hot-Swap ohne Ablassen des Kreises. Passt in
+                42 HE ohne Höhenverlust.
+              </p>
+              <dl class="product__specs">
+                <div><dt>Zweige</dt><dd>8 × 2,0 kW</dd></div>
+                <div><dt>Betriebsdruck</dt><dd>1,5 bar</dd></div>
+                <div><dt>Regelzeit</dt><dd>150 ms</dd></div>
+              </dl>
+            </li>
+
+            <li class="product" data-tilt data-reveal="up" data-reveal-delay="2">
+              <span class="product__tag">CDU-500</span>
+              <h3>Die Verteilung</h3>
+              <p>
+                Trennt Primär- und Sekundärkreis, hebt den Rücklauf und liefert Telemetrie über offene Schnittstellen
+                statt über Insellösungen.
+              </p>
+              <dl class="product__specs">
+                <div><dt>Wärmeleistung</dt><dd>500 kW</dd></div>
+                <div><dt>Fördervolumen</dt><dd>bis 15 m³/h</dd></div>
+                <div><dt>Regelung</dt><dd>PID + Modell</dd></div>
+              </dl>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ── TECHNIK ──────────────────────────────────────────── -->
+      <section class="section section--tech" id="technik" aria-labelledby="technik-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">Technik &amp; Nachweis</p>
+            <h2 class="section__title" id="technik-title" data-split="words">Gemessen, nicht behauptet.</h2>
+          </div>
+
+          <div class="proof" data-reveal="up">
+            <dl class="proof__numbers">
+              <div>
+                <dt>Temperaturspreizung im Feldtest</dt>
+                <dd><span data-count-to="30" data-count-suffix=" K">30 K</span></dd>
+              </div>
+              <div>
+                <dt>Verfügbarkeit der Kühlkreise (12 Monate)</dt>
+                <dd><span data-count-to="99.98" data-count-decimals="2">99,98 %</span></dd>
+              </div>
+              <div>
+                <dt>Geprüfte Lastzyklen pro Kaltplatte</dt>
+                <dd><span data-count-to="100000" data-count-suffix="">100.000</span></dd>
+              </div>
+              <div>
+                <dt>Weniger Lüfterenergie gegenüber Luftkühlung</dt>
+                <dd><span data-count-to="89" data-count-suffix=" %">89 %</span></dd>
+              </div>
+            </dl>
+
+            <div class="proof__bars" data-bars>
+              <div class="proof__row">
+                <span class="proof__label">Junction-Konstanz über 72 h</span>
+                <span class="proof__meter"><i data-bar-to="96"></i></span>
+                <span class="proof__value">96 %</span>
+              </div>
+              <div class="proof__row">
+                <span class="proof__label">Dichtheit nach 10.000 Lastzyklen</span>
+                <span class="proof__meter"><i data-bar-to="99"></i></span>
+                <span class="proof__value">99 %</span>
+              </div>
+              <div class="proof__row">
+                <span class="proof__label">Wiederverwendung der Abwärme</span>
+                <span class="proof__meter"><i data-bar-to="82"></i></span>
+                <span class="proof__value">82 %</span>
+              </div>
+              <div class="proof__row">
+                <span class="proof__label">Servicefreundlichkeit im Betrieb</span>
+                <span class="proof__meter"><i data-bar-to="91"></i></span>
+                <span class="proof__value">91 %</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack" data-reveal="up" data-reveal-delay="1">
+            <h3 class="stack__title">Was den Betrieb ruhig hält</h3>
+            <ul class="stack__list">
+              <li><span>Kopplung an DCIM</span><p>Modbus TCP und REST, Werte im Sekundentakt statt im Minutentakt.</p></li>
+              <li><span>Blindleitfähigkeit</span><p>Leitfähigkeitssensor pro Zweig, Alarmgrenze bei 200 µS/cm.</p></li>
+              <li><span>Hot-Swap-Service</span><p>Kaltplattentausch bei laufendem Cluster, Zweig absperren genügt.</p></li>
+              <li><span>Vorbeugende Wartung</span><p>Pumpenkennlinien im Trend, Ersatzteil nach Messwert statt nach Kalender.</p></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CASES ────────────────────────────────────────────── -->
+      <section class="section" id="referenzen" aria-labelledby="referenzen-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">Im Betrieb</p>
+            <h2 class="section__title" id="referenzen-title" data-split="words">Drei Cluster, drei Winter.</h2>
+            <p class="section__lead" data-reveal="up" data-reveal-delay="1">
+              Die folgenden Referenzen sind Teil dieses Konzepts; Firmen und Personen sind frei erfunden.
+            </p>
+          </div>
+
+          <ul class="cases">
+            <li class="case" data-reveal="up" data-tilt>
+              <p class="case__quote">
+                „Wir haben 1.400 Beschleuniger nicht mehr gedrosselt — der Unterschied lag nicht am Silizium, sondern
+                an der Kühlung."
+              </p>
+              <div class="case__meta">
+                <span class="case__avatar" aria-hidden="true">MK</span>
+                <div>
+                  <p class="case__name">Marta Kovàcs</p>
+                  <p class="case__role">Betriebsleiterin, Nordic Compute Campus (fiktiv)</p>
+                </div>
+              </div>
+              <p class="case__result"><strong>−34 %</strong> Energie für Kühlung</p>
+            </li>
+
+            <li class="case" data-reveal="up" data-reveal-delay="1" data-tilt>
+              <p class="case__quote">
+                „Die Rückwärme reicht für 180 Wohnungen. Der Kühlturm ist im Winter komplett aus."
+              </p>
+              <div class="case__meta">
+                <span class="case__avatar" aria-hidden="true">TZ</span>
+                <div>
+                  <p class="case__name">Tobias Zünd</p>
+                  <p class="case__role">Technischer Leiter, Stadtwerke Riedbach (fiktiv)</p>
+                </div>
+              </div>
+              <p class="case__result"><strong>1.900 MWh</strong> Wärme pro Jahr zurückgewonnen</p>
+            </li>
+
+            <li class="case" data-reveal="up" data-reveal-delay="2" data-tilt>
+              <p class="case__quote">
+                „Ein Rack tauschen, ohne das Cluster abzuschalten — das war der Punkt, der uns überzeugt hat."
+              </p>
+              <div class="case__meta">
+                <span class="case__avatar" aria-hidden="true">AS</span>
+                <div>
+                  <p class="case__name">Anouk Steiner</p>
+                  <p class="case__role">Head of Infrastructure, Helvetia Labs (fiktiv)</p>
+                </div>
+              </div>
+              <p class="case__result"><strong>0 min</strong> Ausfallzeit beim Umbau</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ── FAQ ──────────────────────────────────────────────── -->
+      <section class="section section--faq" id="faq" aria-labelledby="faq-title">
+        <div class="shell">
+          <div class="section__head">
+            <p class="eyebrow" data-reveal="fade">Fragen</p>
+            <h2 class="section__title" id="faq-title" data-split="words">Was Betreiber vorher wissen wollen.</h2>
+          </div>
+
+          <ul class="faq" data-faq>
+            <li class="faq__item">
+              <h3>
+                <button class="faq__trigger" type="button" aria-expanded="false" data-reveal="up">
+                  <span>Muss die Bestandsanlage umgebaut werden?</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg>
+                </button>
+              </h3>
+              <div class="faq__panel" hidden>
+                <div class="faq__panel-inner">
+                  <p>
+                    Nein. Der Sekundärkreis kommt an das bestehende Rackraster. Vorhandene Räume bekommen eine
+                    CDU-Einheit, die Luftkühlung bleibt für Peripherie weiter nutzbar. Typischerweise werden zwei bis
+                    vier Racks pro Wartungsfenster umgestellt.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="faq__item">
+              <h3>
+                <button class="faq__trigger" type="button" aria-expanded="false" data-reveal="up" data-reveal-delay="1">
+                  <span>Was passiert bei einem Leck?</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg>
+                </button>
+              </h3>
+              <div class="faq__panel" hidden>
+                <div class="faq__panel-inner">
+                  <p>
+                    Jeder Zweig hat Durchfluss- und Leitfähigkeitssensorik. Bei Abweichung schliesst das Ventil in
+                    150 ms, die Last wird für die Drosselungsdauer auf die Nachbarracks verteilt. Die Kühlflüssigkeit
+                    ist elektrisch nicht leitend, die Elektronik liegt nicht im Sprühbereich.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="faq__item">
+              <h3>
+                <button class="faq__trigger" type="button" aria-expanded="false" data-reveal="up" data-reveal-delay="2">
+                  <span>Wie hoch ist der Wasserverbrauch?</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg>
+                </button>
+              </h3>
+              <div class="faq__panel" hidden>
+                <div class="faq__panel-inner">
+                  <p>
+                    Der Kreis ist geschlossen, es verdunstet nichts. Wasser wird nur beim Spülen ersetzt —
+                    rechnerisch unter 0,2 % des Verbrauchs eines Verdunstungskühlturms gleicher Leistung.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="faq__item">
+              <h3>
+                <button class="faq__trigger" type="button" aria-expanded="false" data-reveal="up" data-reveal-delay="3">
+                  <span>Lohnt sich der Umbau für ein einziges Rack?</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12" /></svg>
+                </button>
+              </h3>
+              <div class="faq__panel" hidden>
+                <div class="faq__panel-inner">
+                  <p>
+                    Ab etwa 25 kW Rackdichte rechnet sich der Umbau allein über die Lüfterenergie. Darunter ist
+                    Luftkühlung meist die wirtschaftlichere Wahl — und das sagen wir auch so.
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ── KONTAKT ──────────────────────────────────────────── -->
+      <section class="section section--contact" id="kontakt" aria-labelledby="kontakt-title">
+        <div class="shell contact">
+          <div class="contact__text">
+            <p class="eyebrow" data-reveal="fade">Nächster Schritt</p>
+            <h2 class="section__title" id="kontakt-title" data-split="words">Rechnen wir deinen Lastfall durch.</h2>
+            <p class="section__lead" data-reveal="up" data-reveal-delay="1">
+              Schick Rackdichte, Standort und Rücklaufziel. Du bekommst eine Auslegungsskizze mit Volumenstrom,
+              Pumpenleistung und erwarteter Junction-Temperatur — nicht nur eine Broschüre.
+            </p>
+            <ul class="contact__points" data-reveal="up" data-reveal-delay="2">
+              <li>Antwort innerhalb von zwei Arbeitstagen</li>
+              <li>Auslegung mit deinen Messwerten, keine Schätzwerte</li>
+              <li>Auch dann, wenn das Ergebnis „bleib bei Luft" lautet</li>
+            </ul>
+          </div>
+
+          <form class="contact__form" data-reveal="up" data-reveal-delay="1" novalidate>
+            <div class="field">
+              <label for="contact-email">Geschäftliche E-Mail</label>
+              <input id="contact-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="name@unternehmen.ch" required />
+            </div>
+            <div class="field">
+              <label for="contact-site">Standort / Land</label>
+              <input id="contact-site" name="site" type="text" autocomplete="country-name" placeholder="Zürich, CH" />
+            </div>
+            <div class="field">
+              <label for="contact-note">Rackdichte und Ziel</label>
+              <textarea id="contact-note" name="note" rows="4" placeholder="40 kW pro Rack, Rücklauf soll 68 °C erreichen"></textarea>
+            </div>
+            <button class="btn btn--primary btn--full" type="submit" data-magnet>
+              <span>Anfrage senden</span>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h9M8.5 4l4 4-4 4" /></svg>
+            </button>
+            <p class="form-hint" role="status" data-form-status>
+              Konzept ohne Backend: Die Eingaben werden nur lokal geprüft, nichts wird versendet.
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer__inner">
+        <div class="footer__brand">
+          <a class="brand" href="#top" aria-label="HYDRA Dynamics — zum Seitenanfang">
+            <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M16 3c4.6 4.7 7.6 8.6 7.6 12.5a7.6 7.6 0 0 1-15.2 0C8.4 11.6 11.4 7.7 16 3Z" />
+              <path class="brand__wave" d="M10 23.5c1.8-1.4 3.8-2.1 6-2.1s4.2.7 6 2.1" />
+            </svg>
+            <span class="brand__text">HYDRA<em>Dynamics</em></span>
+          </a>
+          <p class="footer__note">
+            Fiktive Marke, gebaut als Design- und Coding-Benchmark. Keine echten Produkte, keine echten Kunden.
+          </p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Footer-Navigation">
+          <div>
+            <h2 class="footer__head">System</h2>
+            <ul>
+              <li><a href="#produkte">Coldplate X1</a></li>
+              <li><a href="#produkte">RackLoop R8</a></li>
+              <li><a href="#produkte">CDU-500</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="footer__head">Betrieb</h2>
+            <ul>
+              <li><a href="#technik">Telemetrie</a></li>
+              <li><a href="#technik">Wartung</a></li>
+              <li><a href="#faq">Sicherheit</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="footer__head">Kontakt</h2>
+            <ul>
+              <li><a href="#kontakt">Machbarkeit prüfen</a></li>
+              <li><a href="mailto:hello@hydra-dynamics.example">hello@hydra-dynamics.example</a></li>
+              <li><a href="#top">Werftstrasse 14, 8005 Zürich</a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="shell footer__base">
+        <p>© <span data-year>2026</span> HYDRA Dynamics AG (fiktiv)</p>
+        <p class="footer__built">Gebaut mit Vite, Tailwind, GSAP, Motion und Lenis — ohne Framework-Ballast.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

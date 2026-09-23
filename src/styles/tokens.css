@@ -1,0 +1,41 @@
+/* ============================================================================
+   HYDRA Dynamics — Design-Tokens
+   Ein Ort für Farbe, Typografie, Radien und Bewegung. Alles andere greift nur zu.
+   Tailwind v4: @theme erzeugt gleichzeitig CSS-Variablen und Utility-Klassen.
+   ========================================================================== */
+
+@theme {
+  /* Farbsystem „Deep Water" ------------------------------------------------ */
+  --color-abyss: #04070e; /* Seitengrund, fast schwarz */
+  --color-ink: #080d16; /* Panels */
+  --color-ink-2: #0d1421; /* erhöhte Flächen */
+  --color-line: #1b2537; /* Rahmen */
+  --color-cyan: #22d3ee; /* Primärakzent */
+  --color-aqua: #5eead4; /* Sekundärakzent */
+  --color-ice: #67e8f9; /* Highlight */
+  --color-heat: #ff7a45; /* Daten, Wärme, Alarm */
+  --color-violet: #a78bfa; /* dritter Akzent, sparsam */
+  --color-mist: #cfdbe9; /* Sekundärtext */
+  --color-foam: #f4f8fc; /* Primärtext */
+
+  /* Typografie ------------------------------------------------------------ */
+  --font-display: "Space Grotesk Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter Variable", "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  /* Raster und Form ------------------------------------------------------- */
+  --spacing: 0.25rem;
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  /* Schatten und Licht ---------------------------------------------------- */
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.04) inset, 0 24px 60px -30px rgb(0 0 0 / 0.9);
+  --shadow-glow: 0 0 0 1px rgb(34 211 238 / 0.25), 0 18px 60px -20px rgb(34 211 238 / 0.45);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Bewegung: benannte Dauern -------------------------------------------- */
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 620ms;
+}

@@ -1,0 +1,7 @@
+﻿/* Einstiegspunkt der Stile. Reihenfolge zaehlt: Tokens -> Basis -> Komponenten -> Utilities.
+   tailwind.css wird von "npm run build:css" erzeugt (siehe tools/build-css.mjs). */
+
+@import "./tokens.css";
+@import "./base.css";
+@import "./components.css";
+@import "./tailwind.css";

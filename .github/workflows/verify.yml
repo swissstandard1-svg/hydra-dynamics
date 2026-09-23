@@ -1,0 +1,34 @@
+name: Prüfungen
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Stile und Typen bauen
+        run: npm run build
+      - name: Markup und CSS prüfen
+        run: |
+          node tools/verify-page.mjs
+          node tools/verify-css.mjs
+      - name: Physik des Simulators prüfen
+        run: node tools/test-simulator.mjs
+      - name: Lighthouse mit Schwellen
+        run: npm run lh
+      - name: Bericht als Artefakt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse
+          path: audit/
+          if-no-files-found: ignore

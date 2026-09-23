@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Selbst gehostete Schriften — kein externer Request, kein Fonts-CDN. */
+@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* Eigene Ebenen. Reihenfolge zählt: Tokens vor Basis vor Komponenten.
+   Hinweis: lokale Imports brauchen ein führendes "./" — sonst sucht der
+   Tailwind-Compiler sie als Paketnamen. Basis ist die Projektwurzel. */
+@import "./src/styles/tokens.css";
+@import "./src/styles/base.css";
+@import "./src/styles/components.css";
+
+/* Eigene Utility-Klassen. Sie gehören hierher, weil Tailwind sie auflösen muss —
+   stehen sie in den eigenen CSS-Dateien, meldet der Minifier „Unknown at rule". */
+@utility animate-float {
+  animation: float 9s var(--ease-smooth) infinite;
+}
+
+@utility animate-drift {
+  animation: drift 26s linear infinite;
+}
+
+@utility animate-pulse-soft {
+  animation: pulse-soft 3.4s ease-in-out infinite;
+}
+
+@utility animate-spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
