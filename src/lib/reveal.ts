@@ -42,10 +42,12 @@ function splitNode(node: HTMLElement): number {
   return charIndex;
 }
 
-export function initRevealLayer(): Dispose {
-  document.querySelectorAll<HTMLElement>("[data-split]").forEach((node) => {
-    splitNode(node);
-  });
+export function initRevealLayer(withSplitText = true): Dispose {
+  if (withSplitText) {
+    document.querySelectorAll<HTMLElement>("[data-split]").forEach((node) => {
+      splitNode(node);
+    });
+  }
 
   // Ohne Animationswunsch: alles bleibt sofort sichtbar, keine Staffelung.
   if (prefersReducedMotion()) {

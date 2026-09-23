@@ -1,0 +1,155 @@
+/* ============================================================================
+   Anpassungen pro Bildschirmbreite.
+
+   Bewusst in der letzten Ebene ('responsive'): So kann keine Utility-Regel
+   aus der Ebene 'utilities' diese Anpassungen mehr aushebeln. Genau das hatte
+   dazu gefuehrt, dass auf schmalen Geraeten der Kopf-Button neben dem Menue
+   stand. Die Regeln bleiben hier zusammen, damit die Reihenfolge pruefbar ist.
+   ========================================================================== */
+
+@media (hover: hover) and (pointer: fine) {
+  .cursor {
+    display: block;
+  }
+}
+@media (max-width: 62rem) {
+  .nav,
+  .header__cta {
+    display: none;
+  }
+  .nav-toggle {
+    display: grid;
+    margin-inline-start: auto;
+  }
+}
+@media (max-width: 60rem) {
+  .story-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 62rem) {
+  .sim {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 34rem) {
+  .sim__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 62rem) {
+  .gallery {
+    grid-auto-flow: column;
+    grid-auto-columns: min(85%, 21rem);
+    grid-template-columns: none;
+    overscroll-behavior-x: contain;
+  }
+}
+@media (max-width: 62rem) {
+  .proof {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 62rem) {
+  .contact {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 52rem) {
+  .footer__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    will-change: transform, opacity;
+    transition:
+      opacity var(--duration-slow) var(--ease-smooth),
+      transform var(--duration-slow) var(--ease-smooth),
+      filter var(--duration-slow) var(--ease-smooth);
+    transition-delay: calc(var(--reveal-delay, 0) * 90ms);
+  }
+
+  [data-reveal="up"] {
+    transform: translateY(28px);
+  }
+
+  [data-reveal="fade"] {
+    transform: none;
+  }
+
+  [data-reveal="zoom"] {
+    transform: scale(0.96);
+  }
+
+  [data-reveal].is-revealed,
+  .split.is-revealed {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    will-change: auto;
+  }
+
+  .split span {
+    display: inline-block;
+    white-space: pre-wrap;
+    opacity: 0;
+    transform: translateY(0.42em) rotateX(-45deg);
+    transform-origin: 50% 100%;
+  }
+
+  .split.is-revealed span {
+    animation: char-in 0.72s var(--ease-smooth) forwards;
+    animation-delay: calc(var(--char-index, 0) * 24ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .ambient,
+  .grain,
+  .cursor,
+  .hero__aurora,
+  .sim__flows,
+  .loop__pulse,
+  .scroll-hint__line i {
+    display: none !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+@media print {
+  .ambient,
+  .grain,
+  .cursor,
+  .scroll-progress,
+  .site-header,
+  .scroll-hint {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .card,
+  .product,
+  .case,
+  .sim,
+  .compare {
+    border-color: #ccc;
+    box-shadow: none;
+  }
+}

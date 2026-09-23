@@ -1,3 +1,4 @@
+@layer components {
 ﻿/* ============================================================================
    Komponenten: Kopf, Hero, Story, Simulator, Produkte, Nachweis, Cases,
    FAQ, Kontakt, Footer, Effekt-Ebenen
@@ -74,11 +75,6 @@
   transform: scale(0.6);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .cursor {
-    display: block;
-  }
-}
 
 .scroll-progress {
   position: fixed;
@@ -87,6 +83,8 @@
   z-index: 80;
   height: 2px;
   background: rgb(255 255 255 / 0.05);
+  /* Dekoration darf keine Klicks abfangen (vom Layout-Gate geprüft) */
+  pointer-events: none;
 }
 
 .scroll-progress span {
@@ -272,16 +270,6 @@
   color: var(--color-cyan);
 }
 
-@media (max-width: 62rem) {
-  .nav,
-  .header__cta {
-    display: none;
-  }
-  .nav-toggle {
-    display: grid;
-    margin-inline-start: auto;
-  }
-}
 
 /* â”€â”€ Buttons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
@@ -528,11 +516,6 @@
   gap: clamp(1.1rem, 2.4vw, 1.8rem);
 }
 
-@media (max-width: 60rem) {
-  .story-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 
 .card {
   position: relative;
@@ -821,11 +804,6 @@
   box-shadow: var(--shadow-card);
 }
 
-@media (max-width: 62rem) {
-  .sim {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 
 .sim__controls {
   display: grid;
@@ -984,11 +962,6 @@ input[type="range"]::-moz-range-thumb {
   gap: clamp(0.9rem, 2vw, 1.4rem);
 }
 
-@media (max-width: 34rem) {
-  .sim__grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 
 .sim__metric dt {
   font-family: var(--font-mono);
@@ -1087,14 +1060,6 @@ input[type="range"]::-moz-range-thumb {
   --rail-space: 0.5rem;
 }
 
-@media (max-width: 62rem) {
-  .gallery {
-    grid-auto-flow: column;
-    grid-auto-columns: min(85%, 21rem);
-    grid-template-columns: none;
-    overscroll-behavior-x: contain;
-  }
-}
 
 .product {
   position: relative;
@@ -1175,11 +1140,6 @@ input[type="range"]::-moz-range-thumb {
   align-items: start;
 }
 
-@media (max-width: 62rem) {
-  .proof {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 
 .proof__numbers {
   display: grid;
@@ -1438,11 +1398,6 @@ input[type="range"]::-moz-range-thumb {
   align-items: start;
 }
 
-@media (max-width: 62rem) {
-  .contact {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 
 .contact__points {
   display: grid;
@@ -1551,11 +1506,6 @@ input[type="range"]::-moz-range-thumb {
   padding-block: clamp(2.2rem, 5vw, 3.5rem);
 }
 
-@media (max-width: 52rem) {
-  .footer__inner {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
 
 .footer__note {
   margin-top: 1rem;
@@ -1609,78 +1559,9 @@ input[type="range"]::-moz-range-thumb {
 
 /* â”€â”€ Reveal- und Split-Animationen â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-@media (prefers-reduced-motion: no-preference) {
-  [data-reveal] {
-    opacity: 0;
-    will-change: transform, opacity;
-    transition:
-      opacity var(--duration-slow) var(--ease-smooth),
-      transform var(--duration-slow) var(--ease-smooth),
-      filter var(--duration-slow) var(--ease-smooth);
-    transition-delay: calc(var(--reveal-delay, 0) * 90ms);
-  }
-
-  [data-reveal="up"] {
-    transform: translateY(28px);
-  }
-
-  [data-reveal="fade"] {
-    transform: none;
-  }
-
-  [data-reveal="zoom"] {
-    transform: scale(0.96);
-  }
-
-  [data-reveal].is-revealed,
-  .split.is-revealed {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    will-change: auto;
-  }
-
-  .split span {
-    display: inline-block;
-    white-space: pre-wrap;
-    opacity: 0;
-    transform: translateY(0.42em) rotateX(-45deg);
-    transform-origin: 50% 100%;
-  }
-
-  .split.is-revealed span {
-    animation: char-in 0.72s var(--ease-smooth) forwards;
-    animation-delay: calc(var(--char-index, 0) * 24ms);
-  }
-}
 
 /* Ausschalter fÃ¼r Nutzer mit Bewegungsempfindlichkeit ------------------- */
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .ambient,
-  .grain,
-  .cursor,
-  .hero__aurora,
-  .sim__flows,
-  .loop__pulse,
-  .scroll-hint__line i {
-    display: none !important;
-  }
-
-  [data-reveal] {
-    opacity: 1 !important;
-    transform: none !important;
-  }
-}
 
 /* â”€â”€ Keyframes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
@@ -1773,27 +1654,4 @@ input[type="range"]::-moz-range-thumb {
 
 /* â”€â”€ Druck â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
-@media print {
-  .ambient,
-  .grain,
-  .cursor,
-  .scroll-progress,
-  .site-header,
-  .scroll-hint {
-    display: none !important;
-  }
-
-  body {
-    background: #fff;
-    color: #111;
-  }
-
-  .card,
-  .product,
-  .case,
-  .sim,
-  .compare {
-    border-color: #ccc;
-    box-shadow: none;
-  }
 }

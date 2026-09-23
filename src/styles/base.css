@@ -1,8 +1,8 @@
+@layer base {
 /* ============================================================================
    Basis: Reset, Typografie, Barrierefreiheit, Layout-Grundraster
    ========================================================================== */
 
-@layer base {
   *,
   *::before,
   *::after {
@@ -150,7 +150,6 @@
 }
 
 /* Grundraster -------------------------------------------------------------- */
-@layer components {
   .shell {
     --gutter: clamp(1.25rem, 4vw, 3.5rem);
     width: 100%;
@@ -210,4 +209,3 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--color-line) 20%, var(--color-line) 80%, transparent);
   }
-}

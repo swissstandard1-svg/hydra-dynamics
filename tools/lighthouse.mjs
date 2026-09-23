@@ -21,7 +21,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname } from "node:path";
 
-import chromeLauncher from "chrome-launcher";
+import * as chromeLauncher from "chrome-launcher";
 import lighthouse from "lighthouse";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -137,6 +137,15 @@ try {
   console.log(`\nBericht: ${resolve(outputDir, "lighthouse.html")}`);
   process.exit(failed ? 1 : 0);
 } finally {
-  chrome.kill();
+  beende(chrome);
   server?.close();
+}
+
+/** Chrome beenden — der Aufräumfehler von chrome-launcher darf das Ergebnis nicht verfälschen. */
+function beende(instanz) {
+  try {
+    instanz.kill();
+  } catch {
+    // Aufräumen ist best effort
+  }
 }

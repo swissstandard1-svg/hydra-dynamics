@@ -1,10 +1,10 @@
 /* ============================================================================
-   HYDRA Dynamics — Design-Tokens
-   Ein Ort für Farbe, Typografie, Radien und Bewegung. Alles andere greift nur zu.
-   Tailwind v4: @theme erzeugt gleichzeitig CSS-Variablen und Utility-Klassen.
+   HYDRA Dynamics - Design-Tokens
+   Ein Ort fuer Farbe, Typografie, Radien und Bewegung. Alles andere greift nur zu.
+   Die Variablen liegen in der Ebene 'theme', damit die Kaskade eindeutig bleibt.
    ========================================================================== */
-
-@theme {
+@layer theme {
+  :root {
   /* Farbsystem „Deep Water" ------------------------------------------------ */
   --color-abyss: #04070e; /* Seitengrund, fast schwarz */
   --color-ink: #080d16; /* Panels */
@@ -39,3 +39,4 @@
   --duration-base: 320ms;
   --duration-slow: 620ms;
 }
+  }

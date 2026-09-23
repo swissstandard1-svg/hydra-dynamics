@@ -23,6 +23,14 @@ jobs:
           node tools/verify-css.mjs
       - name: Physik des Simulators prüfen
         run: node tools/test-simulator.mjs
+      - name: Layout im Browser pruefen
+        run: |
+          node tools/vite.mjs serve &
+          for i in $(seq 1 20); do
+            curl -sf http://localhost:4173/ > /dev/null && break
+            sleep 1
+          done
+          node tools/verify-layout.mjs --url=http://localhost:4173/
       - name: Lighthouse mit Schwellen
         run: npm run lh
       - name: Bericht als Artefakt

@@ -35,7 +35,10 @@ Prüfungen:
 ```bash
 node tools/verify-page.mjs      # Ankerziele, IDs, Überschriften, Labels, CSS-Variablen
 node tools/verify-css.mjs       # Theme-Tokens vorhanden? Alle Utility-Klassen auflösbar?
+node tools/verify-layout.mjs    # Überlappungen, Überlauf, Fehlerzähler (echter Browser)
 node tools/test-simulator.mjs   # Physik: Referenzwerte, Monotonie, Randfälle, Pumpenkennlinie
+node tools/measure-timing.mjs   # Bildzeiten, Schriften, späte Anfragen
+node tools/screenshot.mjs       # Aufnahmen nach audit/shots (nicht versioniert)
 npm run lh                      # Lighthouse gegen dist/ mit Schwellen (Perf 90, A11y 95)
 ```
 
@@ -50,6 +53,17 @@ src/styles/base.css        Reset, Typo-Skala, Barrierefreiheit, Grundraster
 src/styles/components.css  alle Komponenten und Keyframes
 tools/                     Build- und Prüfwerkzeuge (siehe oben)
 docs/                      Design-Spezifikation und Modellnotizen
+```
+
+## Effekte einzeln abschalten
+
+Zum Messen und zum Nachweis der Fehlerfreiheit lässt sich die Atmosphäre-Schicht
+über die Adresse abschalten:
+
+```
+/?effects=off          alle Effekte aus
+/?effects=split        nur die Text-Choreografie aus
+/?effects=ambient,split
 ```
 
 ## Physik des Simulators
@@ -67,6 +81,25 @@ T_J = θ_Vorlauf + R_th · P_Chip      32 Chips pro Rack, R_th in K/W
 Referenzfall 12 kW / 38 °C / 0,018 K/W → 45 °C Junction, 0,35 m³/h, 0,3 W
 Pumpenleistung. Die Zahlen sind Modellwerte, kein Ersatz für eine Auslegung.
 
+## Gemessene Ergebnisse
+
+Gemessen mit `npm run lh` gegen den Vorschau-Server (Desktop 1440×900, CPU 4× gedrosselt):
+
+| Prüfung | Ergebnis |
+|---|---|
+| Performance | 93 |
+| Accessibility | 98 |
+| Best Practices | 100 |
+| SEO | 100 |
+| First Contentful Paint | 1,2 s |
+| Largest Contentful Paint | 1,4 s |
+| Cumulative Layout Shift | 0 |
+| Total Blocking Time | 0 ms |
+| Start-JavaScript | 5,5 kB gzip (Rest lädt nach dem ersten Bild) |
+| Stylesheet | 11,2 kB gzip |
+
+Ausführlicher Prüfbericht mit allen Befunden: `docs/2026-09-23-benchmark-bericht.md`.
+
 ## Umgebungsnotizen (wichtig für Windows + Sandbox)
 
 Diese Punkte sind echte Stolpersteine, keine Vermutungen — sie wurden in dieser
@@ -83,10 +116,10 @@ Umgebung reproduziert:
    und landet in `optimizeSafeRealPathSync()`, das unter Windows `subst`/`net use`
    als Kindprozess aufruft — in der Sandbox ein `spawn EPERM`. Ersatz:
    `tools/vite.mjs` nutzt die Vite-Node-API ohne Config-Datei.
-4. **Chrome headless startet in der Sandbox nicht** (`mojo platform_channel`,
-   benannte Pipes gesperrt). Deshalb konnten hier weder Screenshots noch
-   Lighthouse-Zahlen entstehen; `npm run lh` und der CI-Workflow sind fertig
-   verdrahtet und liefern auf einem normalen Rechner bzw. in CI die Messwerte.
+4. **Chrome headless startet in der engen Sandbox nicht** (`mojo platform_channel`,
+   benannte Pipes gesperrt); mit weiterem Zugriff laufen Screenshots und
+   Lighthouse. Beides ist als Werkzeug im Projekt (`tools/screenshot.mjs`,
+   `tools/lighthouse.mjs`) und der CI-Workflow führt es aus.
 
 ## Nächste Schritte, falls gewünscht
 
