@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700" font-family="'Space Grotesk','Segoe UI',system-ui,sans-serif">
+  <title>HYDRA Dynamics — Design-Übersicht</title>
+  <desc>Gezeichnete Übersicht über Farben, Typografie, Abstände und Sektionsaufbau der Konzept-Website. Kein Screenshot der Seite.</desc>
+
+  <rect width="1000" height="700" fill="#04070E"/>
+  <rect x="0" y="0" width="1000" height="2" fill="url(#top)"/>
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE"/><stop offset="0.5" stop-color="#5EEAD4"/><stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#22D3EE" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#04070E" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="880" cy="90" r="180" fill="url(#glow)"/>
+
+  <!-- Kopf -->
+  <g transform="translate(48, 54)">
+    <path d="M8 0c11 11 18 20 18 29a18 18 0 0 1-36 0C-10 20-3 11 8 0Z" fill="#22D3EE"/>
+    <text x="42" y="22" fill="#F4F8FC" font-size="22" font-weight="600">HYDRA</text>
+    <text x="132" y="22" fill="#CFDBE9" font-size="22" font-weight="400">Dynamics</text>
+    <text x="0" y="62" fill="#67E8F9" font-size="11" letter-spacing="2.4" font-family="'JetBrains Mono',monospace">DESIGN-ÜBERSICHT — GEZEICHNET, KEIN SCREENSHOT</text>
+  </g>
+
+  <!-- Farbpalette -->
+  <g transform="translate(48, 168)">
+    <text x="0" y="0" fill="#CFDBE9" font-size="12" letter-spacing="2" font-family="'JetBrains Mono',monospace">PALETTE</text>
+    <g transform="translate(0, 18)">
+      <g><rect width="140" height="72" rx="12" fill="#04070E" stroke="#1B2537"/><text x="12" y="92" fill="#CFDBE9" font-size="12">Abyss</text><text x="12" y="108" fill="#67E8F9" font-size="11" font-family="'JetBrains Mono',monospace">#04070E</text></g>
+      <g transform="translate(152,0)"><rect width="140" height="72" rx="12" fill="#0A111C" stroke="#1B2537"/><text x="12" y="92" fill="#CFDBE9" font-size="12">Ink</text><text x="12" y="108" fill="#67E8F9" font-size="11" font-family="'JetBrains Mono',monospace">#0A111C</text></g>
+      <g transform="translate(304,0)"><rect width="140" height="72" rx="12" fill="#22D3EE"/><text x="12" y="92" fill="#CFDBE9" font-size="12">Cyan</text><text x="12" y="108" fill="#67E8F9" font-size="11" font-family="'JetBrains Mono',monospace">#22D3EE</text></g>
+      <g transform="translate(456,0)"><rect width="140" height="72" rx="12" fill="#5EEAD4"/><text x="12" y="92" fill="#CFDBE9" font-size="12">Aqua</text><text x="12" y="108" fill="#67E8F9" font-size="11" font-family="'JetBrains Mono',monospace">#5EEAD4</text></g>
+      <g transform="translate(608,0)"><rect width="140" height="72" rx="12" fill="#FF7A45"/><text x="12" y="92" fill="#CFDBE9" font-size="12">Heat</text><text x="12" y="108" fill="#67E8F9" font-size="11" font-family="'JetBrains Mono',monospace">#FF7A45</text></g>
+      <g transform="translate(760,0)"><rect width="140" height="72" rx="12" fill="#F4F8FC"/><text x="12" y="92" fill="#CFDBE9" font-size="12">Foam</text><text x="12" y="108" fill="#67E8F9" font-size="11" font-family="'JetBrains Mono',monospace">#F4F8FC</text></g>
+    </g>
+  </g>
+
+  <!-- Typografie -->
+  <g transform="translate(48, 330)">
+    <text x="0" y="0" fill="#CFDBE9" font-size="12" letter-spacing="2" font-family="'JetBrains Mono',monospace">TYPOGRAFIE</text>
+    <text x="0" y="52" fill="#F4F8FC" font-size="40" font-weight="600" letter-spacing="-1">Hitze ist der teuerste Fehler.</text>
+    <text x="0" y="86" fill="#CFDBE9" font-size="16">Space Grotesk für Überschriften, Inter für Text, JetBrains Mono für Messwerte.</text>
+    <text x="0" y="112" fill="#67E8F9" font-size="14" font-family="'JetBrains Mono',monospace">0,018 K/W · 68 °C Rücklauf · 32 Chips pro Rack</text>
+  </g>
+
+  <!-- Sektionsaufbau -->
+  <g transform="translate(48, 490)">
+    <text x="0" y="0" fill="#CFDBE9" font-size="12" letter-spacing="2" font-family="'JetBrains Mono',monospace">SEKTIONEN</text>
+    <g transform="translate(0, 16)" font-size="12" font-family="'JetBrains Mono',monospace">
+      <g><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#22D3EE"/><text x="18" y="20" fill="#67E8F9">Hero</text></g>
+      <g transform="translate(116,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#1B2537"/><text x="14" y="20" fill="#CFDBE9">Story</text></g>
+      <g transform="translate(232,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#1B2537"/><text x="14" y="20" fill="#CFDBE9">Prinzip</text></g>
+      <g transform="translate(348,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#5EEAD4"/><text x="14" y="20" fill="#5EEAD4">Simulator</text></g>
+      <g transform="translate(464,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#1B2537"/><text x="14" y="20" fill="#CFDBE9">Produkte</text></g>
+      <g transform="translate(580,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#1B2537"/><text x="14" y="20" fill="#CFDBE9">Technik</text></g>
+      <g transform="translate(696,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#1B2537"/><text x="14" y="20" fill="#CFDBE9">Cases</text></g>
+      <g transform="translate(812,0)"><rect width="104" height="30" rx="15" fill="#0D1421" stroke="#1B2537"/><text x="14" y="20" fill="#CFDBE9">FAQ</text></g>
+    </g>
+    <text x="0" y="76" fill="#8FA3B8" font-size="12">Effekte je Sektion: Strömungsfeld-Canvas, Scroll-Fortschritt, Split-Text, Spotlight-Bento, Tilt-Karten, Magnet-Buttons, Zählwerte, Balken, Thermografie-SVG.</text>
+  </g>
+
+  <text x="952" y="668" fill="#8FA3B8" font-size="11" text-anchor="end" font-family="'JetBrains Mono',monospace">hydra-dynamics · Design-Benchmark</text>
+</svg>
