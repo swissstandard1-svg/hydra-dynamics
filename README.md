@@ -83,22 +83,26 @@ Pumpenleistung. Die Zahlen sind Modellwerte, kein Ersatz für eine Auslegung.
 
 ## Gemessene Ergebnisse
 
-Gemessen mit `npm run lh` gegen den Vorschau-Server (Desktop 1440×900, CPU 4× gedrosselt):
+`npm run lh` gegen den Vorschau-Server (Desktop 1440×900, CPU 4× gedrosselt),
+bewertet als Median aus drei Läufen:
 
 | Prüfung | Ergebnis |
 |---|---|
-| Performance | 93 |
+| Performance | 91 |
 | Accessibility | 98 |
 | Best Practices | 100 |
 | SEO | 100 |
-| First Contentful Paint | 1,2 s |
+| First Contentful Paint | 1,4 s |
 | Largest Contentful Paint | 1,4 s |
 | Cumulative Layout Shift | 0 |
 | Total Blocking Time | 0 ms |
-| Start-JavaScript | 5,5 kB gzip (Rest lädt nach dem ersten Bild) |
-| Stylesheet | 11,2 kB gzip |
+| Start-JavaScript | 5,5 kB gzip |
+| Nachgeladen nach dem ersten Bild | 50,5 kB gzip |
+| HTML inklusive eingebettetem CSS | 18,8 kB gzip |
+| Schriften | 6 Dateien, selbst gehostet, kein externer Request |
 
-Ausführlicher Prüfbericht mit allen Befunden: `docs/2026-09-23-benchmark-bericht.md`.
+Der verbleibende Accessibility-Punkt ist im Bericht dokumentiert:
+`docs/2026-09-23-benchmark-bericht.md`.
 
 ## Umgebungsnotizen (wichtig für Windows + Sandbox)
 

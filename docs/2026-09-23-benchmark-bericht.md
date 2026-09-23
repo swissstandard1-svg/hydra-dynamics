@@ -1,98 +1,94 @@
 # Benchmark-Bericht — Coding & Design
 
-Gemessen am 23.09.2026 auf diesem Arbeitsplatz. Jede Zahl in diesem Bericht
-stammt aus einem ausgeführten Werkzeug, nicht aus einer Schätzung.
+Gemessen am 23.09.2026 auf diesem Arbeitsplatz. Jede Zahl stammt aus einem
+ausgeführten Werkzeug. `npm run lh` bewertet den **Median aus drei Läufen**,
+weil einzelne Läufe hier um bis zu elf Punkte schwanken (kaltes Dateisystem,
+Hintergrundlast).
 
-## Ergebnis in Kurzform
+## Ergebnis
 
 | Prüfung | Ergebnis | Werkzeug |
 |---|---|---|
-| Lighthouse Performance (Desktop) | **93** | `npm run lh` |
+| Lighthouse Performance (Median aus 3) | **91** | `npm run lh` |
 | Lighthouse Accessibility | **98** | `npm run lh` |
 | Lighthouse Best Practices | **100** | `npm run lh` |
 | Lighthouse SEO | **100** | `npm run lh` |
-| First Contentful Paint | **1,2 s** | Lighthouse, CPU 4× gedrosselt |
+| First Contentful Paint | **1,4 s** | Lighthouse, CPU 4× gedrosselt |
 | Largest Contentful Paint | **1,4 s** | Lighthouse |
 | Cumulative Layout Shift | **0** | Lighthouse |
 | Total Blocking Time | **0 ms** | Lighthouse |
-| Start-JavaScript (gzip) | **5,5 kB** | Vite-Build |
-| Nachgeladen (gzip) | **50,5 kB** (GSAP + ScrollTrigger + Lenis) | Vite-Build |
-| Stylesheet (gzip) | **11,2 kB** | Vite-Build |
-| JavaScript-Fehler im Browser | **0** | `data-js-errors` am `<html>` |
-| Physik-Prüfungen | **alle bestanden** | `tools/test-simulator.mjs` |
-| Markup-/CSS-Prüfungen | **alle bestanden** | `verify-page`, `verify-css` |
-| Layout bei 390/768/1440 px | **keine Befunde** | `tools/verify-layout.mjs` |
+| Start-JavaScript | **5,5 kB gzip** | Vite-Build |
+| Nachgeladen nach dem ersten Bild | **50,5 kB gzip** (GSAP + ScrollTrigger + Lenis) | Vite-Build |
+| HTML inklusive eingebettetem CSS | **18,8 kB gzip** | Build |
+| Schriften | **6 Dateien, ~133 kB roh**, selbst gehostet | Build |
+| JavaScript-Fehler im Browser | **0** | `data-js-errors` im DOM |
+| Markup, CSS, Physik, Layout | **alle bestanden** | vier Prüfwerkzeuge |
 
-## Was der Prüfweg gefunden hat
+## Was die Prüfungen gefunden haben
 
-Fünf echte Fehler, jeder durch ein Werkzeug aufgedeckt — nicht durch Hinsehen:
+Sieben echte Fehler, jeder von einem Werkzeug aufgedeckt:
 
-1. **Einheitenfehler im Thermal-Modell.** 40 Chips × 2,5 kW ergaben 87 °C
-   Junction, obwohl das Modell „2.000 W pro Socket" behauptete. Das Modell wurde
-   auf 32 Chips und realistische 0,375 kW pro Chip umgerechnet, und die Texte
-   der Seite wurden angepasst — statt die Zahl schönzurechnen.
-2. **Falsche Dichteformel.** Meine Potenzformel lieferte 690 kg/m³ statt
-   987 kg/m³ bei 53 °C, also 43 % zu viel Volumenstrom. Ersetzt durch eine
-   Stütztabelle mit linearer Interpolation, geprüft bei 4/53/95 °C.
-3. **Unrealistische Pumpenkennlinie.** Ein fester Druckverlust überschätzte die
-   Pumpenleistung bei kleiner Last. Jetzt quadratischer Druckverlust, geprüft
-   über den Zusammenhang P ~ V̇³ (doppelter Volumenstrom → achtfache Leistung).
-4. **Überlappung im Kopf auf schmalen Geräten.** Der CTA-Button stand neben dem
-   Menü-Icon. Ursache war keine Feinheit im Layout, sondern die Kaskade:
+1. **Einheitenfehler im Thermal-Modell.** 40 Chips × 2,5 kW ergaben 87 °C, obwohl
+   der Text „2.000 W pro Socket" behauptete. Das Modell rechnet jetzt mit 32
+   Chips und 0,375 kW pro Chip; die Texte wurden angepasst, nicht die Zahl.
+2. **Falsche Dichteformel.** 690 kg/m³ statt 987 kg/m³ bei 53 °C — 43 % zu viel
+   Volumenstrom. Ersetzt durch eine Stütztabelle mit Interpolation.
+3. **Unrealistische Pumpenkennlinie.** Fester Druckverlust überschätzte die
+   Pumpenleistung bei kleiner Last. Jetzt quadratisch, geprüft über P ~ V̇³.
+4. **Überlappung im Kopf auf schmalen Geräten.** Ursache war die Kaskade:
    Tailwind deklariert `@layer theme, base, components, utilities`, meine Regeln
-   lagen ausserhalb jeder Ebene und verloren gegen die Utilities-Ebene. Behoben
-   durch eine explizite Ebenenfolge und eine eigene, letzte Ebene `responsive`.
-   Seither prüft `tools/verify-layout.mjs` genau das bei drei Breiten.
-5. **Dekoration fing Zeiger ab.** Die Fortschrittsleiste am oberen Rand nahm
-   Klicks an, weil `pointer-events: none` fehlte — ebenfalls vom Layout-Gate
-   gefunden.
+   lagen ausserhalb jeder Ebene und verloren. Behoben durch explizite
+   Ebenenfolge plus eigene letzte Ebene `responsive`.
+5. **Dekoration fing Zeiger ab.** Die Fortschrittsleiste nahm Klicks an.
+6. **Die selbst gehosteten Schriften wurden nie geladen.** Die @fontsource-
+   Importe erzeugten @font-face-Regeln, aber der Bundler gab die Dateien nicht
+   aus; die Anfragen liefen ins Leere und die Seite zeigte Ersatzschriften.
+   Jetzt liegen die sechs benötigten Schnitte als Projektdateien in
+   `src/styles/fonts/` mit eigenen @font-face-Regeln (nur latin und latin-ext).
+7. **Render-blockierendes Stylesheet.** Es war die einzige Anfrage auf dem
+   kritischen Pfad (152 ms im Modell). Jetzt wird es beim Build direkt ins HTML
+   geschrieben — ein Roundtrip weniger.
 
 ## Was die Messung verändert hat
 
-Der erste Lighthouse-Lauf gegen meinen eigenen Mini-Server ergab Performance 65
-mit FCP und LCP bei je 3,2 s. Ursache war nicht die Seite, sondern der Server:
-Er lieferte uncompressed aus und erzeugte so einen unrealistischen Engpass
-(167 KiB Ersparnis, die es in echt nicht gibt). Danach wurde gegen den
-Vite-Vorschau-Server gemessen — der Zustand, den ein echtes Deployment hat.
+- Der erste Lauf gegen einen selbstgebauten Mini-Server ergab Performance 65 mit
+  FCP und LCP bei 3,2 s — der Server lieferte uncompressed aus. Gegen den
+  Vite-Vorschau-Server (Zustand wie im echten Deployment) waren es 85.
+- Das Start-Bundle enthielt GSAP, ScrollTrigger und Lenis mit 151 kB. Jetzt lädt
+  der Kern 14,7 kB (5,5 kB gzip), die Effekt-Schicht kommt nach dem ersten Bild.
+  85 → 91 nach Median-Bewertung, mit zwischenzeitlichen 93.
+- Zwei Messungen waren wertlos, weil ein **alter Serverprozess** noch den
+  vorherigen Build auslieferte. Seither wird vor jeder Messung geprüft, dass die
+  ausgelieferte `index.html` byteweise dem Build entspricht (`md5sum`).
 
-Geblieben ist eine echte Ersparnis: Das Start-Bundle lag bei 151 kB (56 kB gzip),
-weil GSAP, ScrollTrigger und Lenis zusammen mit der Grundfunktion geladen
-wurden. Jetzt lädt der Kern 14,7 kB (5,5 kB gzip), die Effekt-Schicht kommt nach
-dem ersten Bild nach. Ergebnis: 65 → 93 Punkte.
+## Verbleibender Befund
 
-## Grenzen dieser Messung
+Accessibility 98 statt 100: Lighthouse beanstandet die Überschriftenreihenfolge
+für die vier FAQ-Fragen (`ul.faq > li > h3`). Jede einzelne Überschrift folgt im
+Dokument auf die H2 des Abschnitts, die Reihenfolge h1 → h2 → h3 ist also
+eingeordnet korrekt; die Prüfung sieht den Text in den `h3`-Elementen nicht, weil
+er in einem `button` liegt. Die Fragen bleiben als Überschriften erhalten, weil
+das für die Navigation mit Screenreadern der richtige Weg ist. Der Befund ist
+damit dokumentiert und bewusst offen — nicht weggeredet und nicht wegoptimiert.
 
-- Gemessen auf einem lokalen Vorschau-Server, nicht auf einem CDN. Andere
-  Netzbedingungen verschieben FCP und LCP.
-- Desktop-Konfiguration (1440×900). Mobil wurde im Layout geprüft, aber nicht
-  durch Lighthouse bewertet.
-- Ein einzelner Lauf je Konfiguration nach dem Neustart des Servers. Vorherige
-  Schwankungen (93 → 82) kamen von einem Server, der noch den alten Build
-  auslieferte — deshalb gehört zu jeder Messung der Fingerabdruck der
-  ausgelieferten Dateien.
+## Grenzen der Messung
 
-## Umgebungsnotizen
+- Lokaler Vorschau-Server, kein CDN. Andere Netzbedingungen verschieben FCP/LCP.
+- Desktop-Konfiguration 1440×900. Mobil ist über das Layout-Gate geprüft
+  (390, 768, 1440 px), aber nicht durch Lighthouse bewertet.
+- Der jeweils erste Lauf einer Sitzung ist reproduzierbar langsamer (80–82).
+  Bewertet wird der Median aus drei Läufen.
 
-Screenshots und Lighthouse waren in dieser Umgebung lange blockiert: Chrome
-headless scheitert an gesperrten benannten Pipes (`mojo platform_channel`).
-Mit weiterem Zugriff laufen beide Werkzeuge. Ebenfalls blockiert und gelöst:
-
-- npm-Cache ausserhalb des Schreibbereichs → `.npmrc` verlegt ihn in den Projektbaum.
-- `@tailwindcss/vite` bricht beim Config-Bündeln ab → eigener CSS-Schritt über
-  die Node-API (`tools/build-css.mjs`).
-- Die `vite`-CLI startet nicht (`spawn EPERM` in `optimizeSafeRealPathSync`) →
-  Vite-Node-API ohne Config-Datei (`tools/vite.mjs`).
-
-## Werkzeuge in diesem Projekt
+## Werkzeuge
 
 ```bash
-npm run build                     # Tailwind → tsc --noEmit → Vite-Build
-npm run lh                        # Lighthouse mit Schwellen (90/95/95/95)
+npm run build                     # Tailwind → tsc --noEmit → Vite-Build → CSS einbetten
+npm run lh                        # Lighthouse, Median aus 3 Läufen, Schwellen 90/95
 node tools/verify-page.mjs        # Ankerziele, IDs, H1, Labels, CSS-Variablen
 node tools/verify-css.mjs         # Theme-Tokens, auflösbare Utility-Klassen
 node tools/verify-layout.mjs      # Überlappungen, Überlauf, Fehlerzähler (Browser)
 node tools/test-simulator.mjs     # Physik: Referenz, Monotonie, Randfälle
 node tools/measure-timing.mjs     # Bildzeiten, Schriften, späte Anfragen
-node tools/screenshot.mjs         # Aufnahmen in audit/shots (nicht versioniert)
+node tools/screenshot.mjs         # Aufnahmen nach audit/shots (nicht versioniert)
 node tools/lighthouse-report.mjs  # Bericht auswerten statt scrollen
 ```

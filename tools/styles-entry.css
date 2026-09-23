@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
 /* Selbst gehostete Schriften - kein externer Request, kein Fonts-CDN. */
-@import "@fontsource-variable/space-grotesk";
-@import "@fontsource-variable/inter";
-@import "@fontsource-variable/jetbrains-mono";
+@import "./src/styles/fonts.css";
 
 /* Eigene Ebenen in dieser Reihenfolge:
    theme      Design-Tokens

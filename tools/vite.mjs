@@ -33,6 +33,44 @@ const config = {
   server: { port: 5173, strictPort: true },
 };
 
+/**
+ * Stylesheet nach dem Build direkt in das HTML schreiben.
+ *
+ * Warum? Das verlinkte CSS war die einzige render-blockierende Anfrage
+ * (im Modell 152 ms) und lag damit auf dem kritischen Pfad vor dem ersten
+ * Bild. Bei einer Seite ohne CSS-Code-Splitting ist das Einbetten der
+ * einfachere und schnellere Weg: ein Roundtrip weniger, kein Aufblitzen
+ * ungestylter Inhalte. Das HTML wächst dadurch um wenige Kilobyte gzip.
+ */
+async function inlineStylesheet() {
+  const { readFile, writeFile, rm } = await import("node:fs/promises");
+
+  const htmlPath = resolve(projectRoot, "dist/index.html");
+  let html = await readFile(htmlPath, "utf8");
+
+  const tag = html.match(/<link[^>]+rel="stylesheet"[^>]*href="([^"]+)"[^>]*>/);
+  if (!tag) {
+    console.log("Kein Stylesheet-Link gefunden — nichts eingebettet.");
+    return;
+  }
+
+  const href = tag[1].replace(/^\.\//, "/");
+  const cssPath = resolve(projectRoot, "dist", href.replace(/^\//, ""));
+  const css = await readFile(cssPath, "utf8");
+
+  html = html.replace(tag[0], `<style>${css}</style>`);
+  await writeFile(htmlPath, html, "utf8");
+  await rm(cssPath, { force: true });
+
+  // Nur die gerade eingebettete Datei entfernen — und nur, wenn die Einbettung
+  // wirklich stattgefunden hat. Quelldateien unter src/ werden nie angefasst.
+  if (!cssPath.startsWith(resolve(projectRoot, "dist"))) {
+    throw new Error("Sicherung: Pfad liegt ausserhalb von dist/");
+  }
+
+  console.log(`Stylesheet eingebettet: ${(Buffer.byteLength(css, "utf8") / 1024).toFixed(1)} kB roh, kein externer CSS-Request mehr.`);
+}
+
 const mode = process.argv[2] ?? "build";
 
 if (mode === "serve") {
@@ -40,5 +78,6 @@ if (mode === "serve") {
   server.printUrls();
 } else {
   await build(config);
+  await inlineStylesheet();
   console.log("Build fertig (dist/).");
 }

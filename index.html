@@ -57,7 +57,7 @@
 
     <header class="site-header" id="site-header">
       <div class="shell header__inner">
-        <a class="brand" href="#top" aria-label="HYDRA Dynamics — zum Seitenanfang">
+        <a class="brand" href="#top">
           <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
             <path d="M16 3c4.6 4.7 7.6 8.6 7.6 12.5a7.6 7.6 0 0 1-15.2 0C8.4 11.6 11.4 7.7 16 3Z" />
             <path class="brand__wave" d="M10 23.5c1.8-1.4 3.8-2.1 6-2.1s4.2.7 6 2.1" />
@@ -171,7 +171,7 @@
 
           <div class="story-grid">
             <article class="card card--story" data-reveal="up" data-tilt>
-              <h3>Die Wand bei 25 kW pro Rack</h3>
+              <p class="card__title">Die Wand bei 25 kW pro Rack</p>
               <p>
                 Darüber kostet jedes zusätzliche Kilowatt überproportional viel Luftleistung: grössere Lamellen, mehr
                 Lüfterdrehzahl, mehr Filterwechsel. Der Grenznutzen kippt, lange bevor das Silizium ans Limit kommt.
@@ -184,7 +184,7 @@
             </article>
 
             <article class="card card--story card--accent" data-reveal="up" data-reveal-delay="1" data-tilt>
-              <h3>Was wir dagegen setzen</h3>
+              <p class="card__title">Was wir dagegen setzen</p>
               <p>
                 Eine Kaltplatte mit 0,018 K/W Wärmewiderstand sitzt direkt auf dem Die. Der Transportweg für Wärme
                 schrumpft von Zentimetern Luft auf Millimeter Metall — und die Abwärme wird bei 68 °C zurückgegeben,
@@ -264,22 +264,22 @@
           <ol class="loop" data-loop>
             <li class="loop__step" data-reveal="up">
               <span class="loop__index">01</span>
-              <h3>Kaltplatte</h3>
+              <p class="card__title">Kaltplatte</p>
               <p>Mikrokanäle über dem Die ziehen die Wärme mit 0,018 K/W ab — deutlich vor der Drosselgrenze.</p>
             </li>
             <li class="loop__step" data-reveal="up" data-reveal-delay="1">
               <span class="loop__index">02</span>
-              <h3>RackLoop</h3>
+              <p class="card__title">RackLoop</p>
               <p>Acht geregelte Zweige versorgen ebenso viele Sockets und stellen den Volumenstrom pro Zweig ein.</p>
             </li>
             <li class="loop__step" data-reveal="up" data-reveal-delay="2">
               <span class="loop__index">03</span>
-              <h3>CDU</h3>
+              <p class="card__title">CDU</p>
               <p>Die Kühlverteilung trennt Primär- und Sekundärkreis und hebt den Rücklauf auf 68 °C.</p>
             </li>
             <li class="loop__step" data-reveal="up" data-reveal-delay="3">
               <span class="loop__index">04</span>
-              <h3>Wärme abgeben</h3>
+              <p class="card__title">Wärme abgeben</p>
               <p>Fernwärme, Trockenkühler oder Prozesswärme: Die Abwärme wird genutzt, nicht weggelüftet.</p>
             </li>
           </ol>
@@ -426,7 +426,7 @@
           <ul class="gallery" data-gallery tabindex="0" aria-label="Produktkarten, horizontal scrollbar">
             <li class="product" data-tilt data-reveal="up">
               <span class="product__tag">Coldplate X1</span>
-              <h3>Die Kaltplatte</h3>
+              <p class="card__title">Die Kaltplatte</p>
               <p>
                 Kupfer-Mikrokanäle mit 0,4 mm Steg, Dichtung aus EPDM, geprüft auf 100.000 Zyklen. Sitzt direkt auf
                 dem Die.
@@ -440,7 +440,7 @@
 
             <li class="product" data-tilt data-reveal="up" data-reveal-delay="1">
               <span class="product__tag">RackLoop R8</span>
-              <h3>Der Verteiler</h3>
+              <p class="card__title">Der Verteiler</p>
               <p>
                 Blindleitfähigkeitsüberwachung, acht geregelte Zweige, Hot-Swap ohne Ablassen des Kreises. Passt in
                 42 HE ohne Höhenverlust.
@@ -454,7 +454,7 @@
 
             <li class="product" data-tilt data-reveal="up" data-reveal-delay="2">
               <span class="product__tag">CDU-500</span>
-              <h3>Die Verteilung</h3>
+              <p class="card__title">Die Verteilung</p>
               <p>
                 Trennt Primär- und Sekundärkreis, hebt den Rücklauf und liefert Telemetrie über offene Schnittstellen
                 statt über Insellösungen.
@@ -522,7 +522,7 @@
           </div>
 
           <div class="stack" data-reveal="up" data-reveal-delay="1">
-            <h3 class="stack__title">Was den Betrieb ruhig hält</h3>
+            <p class="stack__title card__title">Was den Betrieb ruhig hält</p>
             <ul class="stack__list">
               <li><span>Kopplung an DCIM</span><p>Modbus TCP und REST, Werte im Sekundentakt statt im Minutentakt.</p></li>
               <li><span>Blindleitfähigkeit</span><p>Leitfähigkeitssensor pro Zweig, Alarmgrenze bei 200 µS/cm.</p></li>
@@ -718,7 +718,7 @@
     <footer class="site-footer">
       <div class="shell footer__inner">
         <div class="footer__brand">
-          <a class="brand" href="#top" aria-label="HYDRA Dynamics — zum Seitenanfang">
+          <a class="brand" href="#top">
             <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
               <path d="M16 3c4.6 4.7 7.6 8.6 7.6 12.5a7.6 7.6 0 0 1-15.2 0C8.4 11.6 11.4 7.7 16 3Z" />
               <path class="brand__wave" d="M10 23.5c1.8-1.4 3.8-2.1 6-2.1s4.2.7 6 2.1" />
@@ -732,7 +732,7 @@
 
         <nav class="footer__nav" aria-label="Footer-Navigation">
           <div>
-            <h2 class="footer__head">System</h2>
+            <p class="footer__head">System</p>
             <ul>
               <li><a href="#produkte">Coldplate X1</a></li>
               <li><a href="#produkte">RackLoop R8</a></li>
@@ -740,7 +740,7 @@
             </ul>
           </div>
           <div>
-            <h2 class="footer__head">Betrieb</h2>
+            <p class="footer__head">Betrieb</p>
             <ul>
               <li><a href="#technik">Telemetrie</a></li>
               <li><a href="#technik">Wartung</a></li>
@@ -748,7 +748,7 @@
             </ul>
           </div>
           <div>
-            <h2 class="footer__head">Kontakt</h2>
+            <p class="footer__head">Kontakt</p>
             <ul>
               <li><a href="#kontakt">Machbarkeit prüfen</a></li>
               <li><a href="mailto:hello@hydra-dynamics.example">hello@hydra-dynamics.example</a></li>

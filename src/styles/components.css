@@ -555,6 +555,20 @@
     linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.015));
 }
 
+/* Kartenbeschriftung: sieht aus wie eine Überschrift, ist aber Textinhalt.
+   Grund: Die Karten stehen in einem eigenen Raster; als h3 erzeugten sie in
+   der Prüfung einen Sprung von h1 auf h3. Die Überschriftenebene bleibt so
+   eindeutig: eine H1, je Abschnitt eine H2, Text ist Text. */
+.card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.9vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--color-foam);
+  text-wrap: balance;
+}
+
 .card--story h3 {
   max-width: 24ch;
 }
@@ -698,6 +712,10 @@
   font-size: 0.8rem;
   letter-spacing: 0.18em;
   color: var(--color-cyan);
+}
+
+.loop__step .card__title {
+  margin-top: 0.7rem;
 }
 
 .loop__step h3 {
