@@ -96,7 +96,20 @@ async function serveDist(port) {
 
 const port = Number(args.port ?? 4173);
 const url = args.url ?? `http://localhost:${port}/`;
-const server = args.url ? null : await serveDist(port);
+
+/** Läuft auf dem Port schon etwas? Dann nutzen wir es, statt zu scheitern. */
+async function portBelegt(p) {
+  try {
+    await fetch(`http://localhost:${p}/`, { method: "HEAD" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const vorhandenerServer = args.url ? true : await portBelegt(port);
+const server = vorhandenerServer ? null : await serveDist(port);
+if (vorhandenerServer) console.log(`Nutze den bereits laufenden Server auf Port ${port}.`);
 
 let chrome;
 let warmup;
