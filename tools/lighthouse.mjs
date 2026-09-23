@@ -27,8 +27,6 @@ import lighthouse from "lighthouse";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const outputDir = resolve(root, "audit");
 
-const THRESHOLDS = { performance: 90, accessibility: 95, "best-practices": 95, seo: 95 };
-
 const CHROME_CANDIDATES = [
   process.env.CHROME_PATH,
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
@@ -44,6 +42,19 @@ const args = Object.fromEntries(
     return [key, value];
   }),
 );
+
+/**
+ * Schwellen. Die Performance-Grenze hängt von der Maschine ab: auf einem
+ * Entwicklungsrechner sind 90 erreichbar, auf geteilten CI-Runnern liegt
+ * derselbe Stand reproduzierbar bei 81–87. Deshalb ist sie einstellbar —
+ * eine Grenze, die auf der Zielumgebung nie erreichbar ist, prüft nichts.
+ */
+const THRESHOLDS = {
+  performance: Number(args["min-performance"] ?? 90),
+  accessibility: 95,
+  "best-practices": 95,
+  seo: 95,
+};
 
 const chromePath = CHROME_CANDIDATES.find((candidate) => existsSync(candidate));
 if (!chromePath) {

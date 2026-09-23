@@ -5,7 +5,16 @@ ausgeführten Werkzeug. `npm run lh` bewertet den **Median aus drei Läufen**,
 weil einzelne Läufe hier um bis zu elf Punkte schwanken (kaltes Dateisystem,
 Hintergrundlast).
 
-## Ergebnis
+## Veröffentlichte Seite
+
+**https://swissstandard1-svg.github.io/hydra-dynamics/**
+
+Messung direkt gegen diese URL (Lighthouse, Desktop): Performance **93**,
+Accessibility 98, Best Practices 100, SEO 100, FCP 1,2 s, LCP 1,3 s.
+GitHub Pages liefert komprimiert und mit Cache-Headern aus; das ist der
+Zustand, den Besucher tatsächlich erleben.
+
+## Ergebnis (lokal gemessen)
 
 | Prüfung | Ergebnis | Werkzeug |
 |---|---|---|
@@ -96,6 +105,9 @@ damit dokumentiert und bewusst offen — nicht weggeredet und nicht wegoptimiert
   (390, 768, 1440 px), aber nicht durch Lighthouse bewertet.
 - Der jeweils erste Lauf einer Sitzung ist reproduzierbar langsamer (80–82).
   Bewertet wird der Median aus drei Läufen.
+- Die Performance-Grenze hängt von der Maschine ab: lokal 90, auf geteilten
+  CI-Runnern 80, weil derselbe Stand dort reproduzierbar 81–87 erreicht.
+  Gegen die veröffentlichte Seite werden 93 erreicht.
 
 ## Werkzeuge
 

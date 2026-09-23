@@ -86,6 +86,17 @@ Pumpenleistung. Die Zahlen sind Modellwerte, kein Ersatz für eine Auslegung.
 **https://swissstandard1-svg.github.io/hydra-dynamics/** (GitHub Pages, Workflow
 `.github/workflows/pages.yml`).
 
+Direkt gegen diese URL gemessen: Performance 93, Accessibility 98,
+Best Practices 100, SEO 100, FCP 1,2 s, LCP 1,3 s.
+
+Lokal starten:
+
+```bash
+npm install
+npm run dev        # Entwicklung auf http://localhost:5173
+npm run preview    # gebaute Seite auf http://localhost:4173
+```
+
 ## Gemessene Ergebnisse
 
 `npm run lh` gegen den Vorschau-Server (Desktop 1440×900, CPU 4× gedrosselt),
