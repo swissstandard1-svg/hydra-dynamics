@@ -58,7 +58,24 @@ async function inlineStylesheet() {
   const cssPath = resolve(projectRoot, "dist", href.replace(/^\//, ""));
   const css = await readFile(cssPath, "utf8");
 
-  html = html.replace(tag[0], `<style>${css}</style>`);
+  // Pfade im eingebetteten CSS richten sich nach dem Ort der CSS-Datei
+  // (dist/assets/…). Im HTML liegen sie unter dist/, deshalb muss der
+  // Unterordner davor. Ohne diesen Schritt zeigen die Schriftpfade ins Leere.
+  const ordner = dirname(href.replace(/^\//, ""));
+  const vorsatz = ordner && ordner !== "." ? ordner + "/" : "";
+  const eingebettet = vorsatz
+    ? css.replace(/url\(\s*(["']?)\.\//g, (_treffer, anfuehrung) => `url(${anfuehrung}${vorsatz}`)
+    : css;
+
+  // Die Schrift für die Überschrift vorladen: Sie ist das grösste Element im
+  // ersten Bild und wird sonst erst nach dem Parsen des Stylesheets entdeckt.
+  // Nur diese eine Datei — mehr würde Bandbreite für nichts belegen.
+  const displaySchrift = eingebettet.match(/url\(["']?(assets\/space-grotesk-latin-wght-normal[^"')]+)/);
+  const preload = displaySchrift
+    ? `<link rel="preload" as="font" type="font/woff2" crossorigin href="./${displaySchrift[1]}">`
+    : "";
+
+  html = html.replace(tag[0], `${preload}<style>${eingebettet}</style>`);
   await writeFile(htmlPath, html, "utf8");
   await rm(cssPath, { force: true });
 

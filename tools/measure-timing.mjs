@@ -108,7 +108,7 @@ try {
   console.log(`Messung gegen ${url} (CPU 4× gedrosselt)\n`);
   console.log("Zeitmarken:", data.marken.map(([name, time]) => `${name} ${time} ms`).join(" · "));
   console.log("LCP:", data.lcp.map(([who, time]) => `${who} @ ${time} ms`).join(" · "));
-  console.log(`Schrift bereit: ${data.schriftBereit} (Status: ${data.schriftStatus})`);
+  console.log(`Schrift bereit: ${data.schriftBereit} (Status: ${data.schriftStatus}) — geladen: ${data.geladeneSchriften.filter((s) => s.includes('loaded') && !s.includes('unloaded')).length}, Fehler: ${data.geladeneSchriften.filter((s) => s.includes('error')).length}`);
   console.log("Schriften:", data.geladeneSchriften.join(" | "));
   console.log(`H1: ${data.h1Kinder} Span-Kinder — „${data.lcpKandidat}“`);
   console.log("\nSpäteste Netzwerkanfragen:");

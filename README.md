@@ -81,6 +81,11 @@ T_J = θ_Vorlauf + R_th · P_Chip      32 Chips pro Rack, R_th in K/W
 Referenzfall 12 kW / 38 °C / 0,018 K/W → 45 °C Junction, 0,35 m³/h, 0,3 W
 Pumpenleistung. Die Zahlen sind Modellwerte, kein Ersatz für eine Auslegung.
 
+## Live
+
+**https://swissstandard1-svg.github.io/hydra-dynamics/** (GitHub Pages, Workflow
+`.github/workflows/pages.yml`).
+
 ## Gemessene Ergebnisse
 
 `npm run lh` gegen den Vorschau-Server (Desktop 1440×900, CPU 4× gedrosselt),
@@ -88,18 +93,18 @@ bewertet als Median aus drei Läufen:
 
 | Prüfung | Ergebnis |
 |---|---|
-| Performance | 91 |
+| Performance | 87 |
 | Accessibility | 98 |
 | Best Practices | 100 |
 | SEO | 100 |
-| First Contentful Paint | 1,4 s |
-| Largest Contentful Paint | 1,4 s |
+| First Contentful Paint | 1,5 s |
+| Largest Contentful Paint | 1,7 s |
 | Cumulative Layout Shift | 0 |
 | Total Blocking Time | 0 ms |
 | Start-JavaScript | 5,5 kB gzip |
 | Nachgeladen nach dem ersten Bild | 50,5 kB gzip |
 | HTML inklusive eingebettetem CSS | 18,8 kB gzip |
-| Schriften | 6 Dateien, selbst gehostet, kein externer Request |
+| Schriften | selbst gehostet, 3 Dateien geladen (109 kB), 0 Fehler |
 
 Der verbleibende Accessibility-Punkt ist im Bericht dokumentiert:
 `docs/2026-09-23-benchmark-bericht.md`.

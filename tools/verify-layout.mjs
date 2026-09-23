@@ -89,6 +89,15 @@ const PROBE = `(() => {
     if (s.pointerEvents !== "none") befund.push("Dekoration fängt Zeiger ab: " + sel);
   }
 
+  // Schriften: laden die selbst gehosteten Dateien wirklich? Fehlende
+  // @font-face-Dateien fallen optisch kaum auf (Ersatzschrift), kosten aber
+  // die Gestaltung — genau dieser Fehler ist hier zweimal aufgetreten.
+  const h1 = document.querySelector("h1");
+  const display = h1 ? getComputedStyle(h1).fontFamily : "";
+  const schriften = [...document.fonts].filter((f) => f.family.includes("Variable"));
+  const fehlerhaft = schriften.filter((f) => f.status === "error").length;
+  if (fehlerhaft > 0) befund.push(fehlerhaft + " Schriftdatei(en) lassen sich nicht laden");
+
   // Unsichtbare Bedienelemente sind ein Barrierefreiheitsproblem
   const ohneNamen = [...document.querySelectorAll("button, a")].filter((el) => {
     const text = (el.textContent || "").trim();
@@ -100,6 +109,8 @@ const PROBE = `(() => {
   return JSON.stringify({
     breite: breit,
     befund,
+    schrift: display.slice(0, 40),
+    schriftFehler: fehlerhaft,
     fehler: document.documentElement.dataset.jsErrors ?? "0",
     effekte: document.documentElement.dataset.effects ?? "nicht gestartet",
     kopf: { brand, nav, cta, toggle },
@@ -166,7 +177,7 @@ try {
     if (state.fehler !== "0") findings.push(`JavaScript-Fehler: ${state.fehler}`);
 
     console.log(
-      `  ${findings.length === 0 ? "✓" : "✗"} ${view.name}: Überlauf ${state.überlauf} px · Effekte ${state.effekte} · Kopf ${JSON.stringify(state.kopf)}`,
+      `  ${findings.length === 0 ? "✓" : "✗"} ${view.name}: Überlauf ${state.überlauf} px · Effekte ${state.effekte} · Schriften ${state.schriftFehler} Fehler · Kopf ${JSON.stringify(state.kopf)}`,
     );
     for (const finding of findings) console.log(`      → ${finding}`);
     if (findings.length) failed = true;

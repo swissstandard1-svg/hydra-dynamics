@@ -9,18 +9,19 @@ Hintergrundlast).
 
 | Prüfung | Ergebnis | Werkzeug |
 |---|---|---|
-| Lighthouse Performance (Median aus 3) | **91** | `npm run lh` |
+| Lighthouse Performance (Median aus 3) | **87** | `npm run lh` |
 | Lighthouse Accessibility | **98** | `npm run lh` |
 | Lighthouse Best Practices | **100** | `npm run lh` |
 | Lighthouse SEO | **100** | `npm run lh` |
-| First Contentful Paint | **1,4 s** | Lighthouse, CPU 4× gedrosselt |
-| Largest Contentful Paint | **1,4 s** | Lighthouse |
+| First Contentful Paint | **1,5 s** | Lighthouse, CPU 4× gedrosselt |
+| Largest Contentful Paint | **1,7 s** | Lighthouse |
 | Cumulative Layout Shift | **0** | Lighthouse |
 | Total Blocking Time | **0 ms** | Lighthouse |
 | Start-JavaScript | **5,5 kB gzip** | Vite-Build |
 | Nachgeladen nach dem ersten Bild | **50,5 kB gzip** (GSAP + ScrollTrigger + Lenis) | Vite-Build |
 | HTML inklusive eingebettetem CSS | **18,8 kB gzip** | Build |
-| Schriften | **6 Dateien, ~133 kB roh**, selbst gehostet | Build |
+| Schriften | **3 Dateien geladen, 109 kB**, selbst gehostet, 0 Fehler | Build + Layout-Gate |
+| Übertragen gesamt | **190 kB in 13 Anfragen** | Lighthouse |
 | JavaScript-Fehler im Browser | **0** | `data-js-errors` im DOM |
 | Markup, CSS, Physik, Layout | **alle bestanden** | vier Prüfwerkzeuge |
 
@@ -49,6 +50,13 @@ Sieben echte Fehler, jeder von einem Werkzeug aufgedeckt:
    kritischen Pfad (152 ms im Modell). Jetzt wird es beim Build direkt ins HTML
    geschrieben — ein Roundtrip weniger.
 
+8. **Die Schriftpfade zeigten nach dem Einbetten ins Leere.** Das Stylesheet
+   wurde aus `dist/assets/` ins HTML kopiert, seine `url(./…)`-Angaben zeigten
+   aber weiter auf `assets/…` — relativ zum HTML also auf eine nicht existierende
+   Datei. Aufgefallen ist es beim Prüfen der Pfade gegen den Build, nicht im
+   Browser: dort greift stillschweigend die Ersatzschrift. Behoben, und das
+   Layout-Gate zählt jetzt fehlerhafte Schriften mit.
+
 ## Was die Messung verändert hat
 
 - Der erste Lauf gegen einen selbstgebauten Mini-Server ergab Performance 65 mit
@@ -60,6 +68,16 @@ Sieben echte Fehler, jeder von einem Werkzeug aufgedeckt:
 - Zwei Messungen waren wertlos, weil ein **alter Serverprozess** noch den
   vorherigen Build auslieferte. Seither wird vor jeder Messung geprüft, dass die
   ausgelieferte `index.html` byteweise dem Build entspricht (`md5sum`).
+
+## Warum die Punktzahl nach der Schriften-Korrektur sinkt
+
+Zwischenzeitlich standen 91 Punkte im Bericht — damals **luden die Schriften
+nicht**. Mit tatsächlich geladenen Schriften sind es 87: 109 kB in drei
+zusätzlichen Anfragen, die im 4G-Modell von Lighthouse je einen Roundtrip
+kosten. Die Gestaltung ist das wert, und die tatsächliche Bildzeit ohne
+Drosselung sank von 600 ms auf **368 ms**. Vorladen der Display-Schrift hat
+davon 5 Punkte zurückgeholt (82 → 87). Weiter ginge nur auf Kosten der
+Typografie, deshalb bleibt es hier.
 
 ## Verbleibender Befund
 
